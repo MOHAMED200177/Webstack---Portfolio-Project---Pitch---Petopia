@@ -1,9 +1,30 @@
 const Cat = require('./../models/petModle');
+const APIFeatures = require('./../utils/apiFeatures');
+const uploud = require('./../utils/uploudImg');
 
 
-exports.creatCat = async (req, res) => {
+exports.createCat = async (req, res) => {
     try {
-        const newCat = await Cat.create(req.body);
+        let imageUrl = '';
+        if (req.file) {
+            imageUrl = `/uploads/${req.file.filename}`;
+        }
+
+        const newCatData = {
+            name: req.body.name,
+            age: req.body.age,
+            breed: req.body.breed,
+            description: req.body.description,
+            adoptionStatus: req.body.adoptionStatus || 'Available',
+            imageUrl: imageUrl,
+            contactInfo: {
+                email: req.body.contactInfo.email,
+                phone: req.body.contactInfo.phone
+            }
+        };
+
+        const newCat = await Cat.create(newCatData);
+
         res.status(201).json({
             status: 'success',
             data: {
@@ -13,15 +34,25 @@ exports.creatCat = async (req, res) => {
     } catch (err) {
         res.status(401).json({
             status: 'fail',
-            massege: err
-        }
-        )
-    };
+            message: err.message
+        });
+    }
 };
+
 
 exports.getAllCats = async (req, res) => {
     try {
-        const cats = await Cat.find();
+        let cats;
+        if (Object.keys(req.query).length === 0) {
+            cats = await Cat.find();
+        } else {
+            const features = new APIFeatures(Cat.find(), req.query)
+                .filter()
+                .sort()
+                .limitFields()
+                .paginate();
+            cats = await features.query;
+        }
 
         res.status(200).json({
             status: 'success',
@@ -33,10 +64,11 @@ exports.getAllCats = async (req, res) => {
     } catch (err) {
         res.status(404).json({
             status: 'fail',
-            massege: err
+            message: err.message
         });
     }
 };
+
 
 
 

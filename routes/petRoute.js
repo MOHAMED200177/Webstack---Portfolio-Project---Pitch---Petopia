@@ -6,7 +6,7 @@ const router = express.Router();
 router
     .route('/')
     .get(catController.getAllCats)
-    .post(catController.creatCat);
+    .post(catController.createCat);
 
 router
     .route('/:id')
