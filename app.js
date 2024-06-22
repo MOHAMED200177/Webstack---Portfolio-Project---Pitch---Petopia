@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/v1/cats', catRoute);
-app.use('/v1/customers', customerRoute);
+app.use('/api/v1/customers', customerRoute);
 
 
 module.exports = app;
