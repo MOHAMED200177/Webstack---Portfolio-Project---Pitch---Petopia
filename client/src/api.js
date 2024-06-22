@@ -20,3 +20,5 @@ export const getCustomer = (id) => customerApi.get(`/${id}`);
 export const createCustomer = (customer) => customerApi.post('/', customer);
 export const updateCustomer = (id, updatedCustomer) => customerApi.patch(`/${id}`, updatedCustomer);
 export const deleteCustomer = (id) => customerApi.delete(`/${id}`);
+
+

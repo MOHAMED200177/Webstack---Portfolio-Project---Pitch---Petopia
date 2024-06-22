@@ -1,0 +1,80 @@
+/* src/components/CatList.css */
+
+.cat-list-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    color: #2c3e50;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filter-item {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .cat-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .cat-card {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .cat-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  
+  .cat-details {
+    flex: 1;
+  }
+  
+  .cat-name {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .cat-breed, .cat-age {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+  }
+  

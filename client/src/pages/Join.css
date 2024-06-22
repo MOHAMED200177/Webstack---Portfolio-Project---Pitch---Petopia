@@ -1,0 +1,24 @@
+/* src/components/Join.css */
+
+.join-container {
+    padding: 40px;
+    background-color: #f4f4f4;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 40px auto;
+    font-family: 'Arial, sans-serif';
+    text-align: center;
+}
+
+.join-heading {
+    color: #34495e;
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.join-form {
+    margin-top: 20px;
+}

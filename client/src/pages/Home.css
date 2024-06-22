@@ -1,0 +1,17 @@
+/* Add this to your CSS file, e.g., Home.css */
+
+.adopt-button {
+    display: inline-block;
+    padding: 0.5em 1em;
+    margin-top: 1em;
+    background-color: #3fe73c;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.adopt-button:hover {
+    background-color: #2bc030;
+}
