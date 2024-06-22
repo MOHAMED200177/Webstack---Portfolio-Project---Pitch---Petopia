@@ -40,6 +40,7 @@ exports.createCat = async (req, res) => {
 };
 
 
+
 exports.getAllCats = async (req, res) => {
     try {
         let cats;
