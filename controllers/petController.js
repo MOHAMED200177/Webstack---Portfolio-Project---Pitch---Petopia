@@ -1,7 +1,23 @@
 const Cat = require('./../models/petModle');
 const APIFeatures = require('./../utils/apiFeatures');
-const uploud = require('./../utils/uploudImg');
+const multer = require('multer');
+const path = require('path');
+// const uploud = require('./../utils/uploudImg');
 
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
+
+const upload = multer({ storage });
+
+exports.uploadCatImage = upload.single('image');
 
 exports.createCat = async (req, res) => {
     try {

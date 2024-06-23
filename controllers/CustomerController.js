@@ -12,6 +12,11 @@ const signToken = id => {
 
 
 exports.signup = catchAsync(async (req, res, next) => {
+
+
+
+
+    
     const newCustomer = await Customer.create({
         name: req.body.name,
         email: req.body.email,

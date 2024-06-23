@@ -31,18 +31,17 @@ const catSchema = new mongoose.Schema({
     },
     imageUrl: {
         type: String,
-        required: true,
         trim: true
     },
     contactInfo: {
         email: {
             type: String,
-            required: true,
+            // required: true,
             trim: true
         },
         phone: {
             type: String,
-            required: true,
+            // required: true,
             trim: true
         }
     }
