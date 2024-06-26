@@ -33,10 +33,8 @@ exports.createCat = async (req, res) => {
             description: req.body.description,
             adoptionStatus: req.body.adoptionStatus || 'Available',
             imageUrl: imageUrl,
-            contactInfo: {
-                email: req.body.contactInfo.email,
-                phone: req.body.contactInfo.phone
-            }
+            email: req.body.email,
+            phone: req.body.phone
         };
 
         const newCat = await Cat.create(newCatData);

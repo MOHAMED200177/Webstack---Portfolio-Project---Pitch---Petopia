@@ -33,18 +33,17 @@ const catSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    contactInfo: {
-        email: {
-            type: String,
-            // required: true,
-            trim: true
-        },
-        phone: {
-            type: String,
-            // required: true,
-            trim: true
-        }
+    email: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    phone: {
+        type: String,
+        required: true,
+        trim: true
     }
+
 });
 
 const Cat = mongoose.model('Cat', catSchema);
