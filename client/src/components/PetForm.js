@@ -1,7 +1,6 @@
-// src/components/PetForm.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../App.css'; 
+import '../App.css';
 
 const PetForm = () => {
     const [formData, setFormData] = useState({
@@ -9,7 +8,7 @@ const PetForm = () => {
         age: '',
         breed: '',
         description: '',
-        imageUrl: '',
+        image: null,
         contactEmail: '',
         contactPhone: ''
     });
@@ -25,10 +24,27 @@ const PetForm = () => {
         });
     };
 
+    const handleFileChange = (e) => {
+        setFormData({
+            ...formData,
+            image: e.target.files[0]
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const data = new FormData();
+        Object.keys(formData).forEach((key) => {
+            data.append(key, formData[key]);
+        });
+
         try {
-            const response = await axios.post('http://localhost:5000/api/v1/cats', formData);
+            const response = await axios.post('http://localhost:5000/api/v1/cats', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             console.log('Pet successfully added:', response.data);
             setFormSuccess(true);
             setFormData({
@@ -36,7 +52,7 @@ const PetForm = () => {
                 age: '',
                 breed: '',
                 description: '',
-                imageUrl: '',
+                image: null,
                 contactEmail: '',
                 contactPhone: ''
             });
@@ -91,12 +107,11 @@ const PetForm = () => {
                     ></textarea>
                 </div>
                 <div className="form-group">
-                    <label>Image URL</label>
+                    <label>Image</label>
                     <input
-                        type="text"
-                        name="imageUrl"
-                        value={formData.imageUrl}
-                        onChange={handleChange}
+                        type="file"
+                        name="image"
+                        onChange={handleFileChange}
                         required
                     />
                 </div>
@@ -129,5 +144,3 @@ const PetForm = () => {
 };
 
 export default PetForm;
-
-
