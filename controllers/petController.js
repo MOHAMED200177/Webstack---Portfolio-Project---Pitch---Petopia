@@ -2,142 +2,122 @@ const Cat = require('./../models/petModle');
 const APIFeatures = require('./../utils/apiFeatures');
 const multer = require('multer');
 const path = require('path');
-// const uploud = require('./../utils/uploudImg');
+const upload = require('./../utils/uploudImg');
+const catchAsync = require('./../utils/catchAsync');
+const fs = require('fs');
 
 
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    }
-});
-
-const upload = multer({ storage });
 
 exports.uploadCatImage = upload.single('image');
 
-exports.createCat = async (req, res) => {
-    try {
-        let imageUrl = '';
-        if (req.file) {
-            imageUrl = `/uploads/${req.file.filename}`;
+exports.createCat = catchAsync(async (req, res) => {
+    let imageUrl = '';
+    if (req.file) {
+        imageUrl = `/uploads/${req.file.filename}`;
+    }
+
+    const newCatData = {
+        name: req.body.name,
+        age: req.body.age,
+        breed: req.body.breed,
+        description: req.body.description,
+        adoptionStatus: req.body.adoptionStatus || 'Available',
+        imageUrl: imageUrl,
+        email: req.body.email,
+        phone: req.body.phone
+    };
+
+    const newCat = await Cat.create(newCatData);
+
+    res.status(201).json({
+        status: 'success',
+        data: {
+            cat: newCat
         }
+    });
+});
 
-        const newCatData = {
-            name: req.body.name,
-            age: req.body.age,
-            breed: req.body.breed,
-            description: req.body.description,
-            adoptionStatus: req.body.adoptionStatus || 'Available',
-            imageUrl: imageUrl,
-            email: req.body.email,
-            phone: req.body.phone
-        };
 
-        const newCat = await Cat.create(newCatData);
 
-        res.status(201).json({
-            status: 'success',
-            data: {
-                cat: newCat
-            }
-        });
-    } catch (err) {
-        res.status(401).json({
-            status: 'fail',
-            message: err.message
-        });
+exports.getAllCats = catchAsync(async (req, res) => {
+
+    let cats;
+    if (Object.keys(req.query).length === 0) {
+        cats = await Cat.find();
+    } else {
+        const features = new APIFeatures(Cat.find(), req.query)
+            .filter()
+            .sort()
+            .limitFields()
+            .paginate();
+        cats = await features.query;
     }
-};
 
-
-
-exports.getAllCats = async (req, res) => {
-    try {
-        let cats;
-        if (Object.keys(req.query).length === 0) {
-            cats = await Cat.find();
-        } else {
-            const features = new APIFeatures(Cat.find(), req.query)
-                .filter()
-                .sort()
-                .limitFields()
-                .paginate();
-            cats = await features.query;
+    res.status(200).json({
+        status: 'success',
+        results: cats.length,
+        data: {
+            cats
         }
+    });
+});
 
-        res.status(200).json({
-            status: 'success',
-            results: cats.length,
-            data: {
-                cats
-            }
-        });
-    } catch (err) {
-        res.status(404).json({
+
+
+
+exports.getCat = catchAsync(async (req, res) => {
+
+    const cat = await Cat.findById(req.params.id);
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            cat
+        }
+    });
+});
+
+
+
+exports.updateCat = catchAsync(async (req, res) => {
+
+    const cat = await Cat.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    });
+    res.status(200).json({
+        status: 'success',
+        data: {
+            cat
+        }
+    });
+});
+
+exports.deleteCat = catchAsync(async (req, res) => {
+
+    // 1. Find the cat to delete
+    const cat = await Cat.findById(req.params.id);
+
+    if (!cat) {
+        return res.status(404).json({
             status: 'fail',
-            message: err.message
+            message: 'Cat not found'
         });
     }
-};
 
-
-
-
-exports.getCat = async (req, res) => {
-    try {
-        const cat = await Cat.findById(req.params.id);
-
-        res.status(200).json({
-            status: 'success',
-            data: {
-                cat
-            }
-        });
-    } catch (err) {
-        res.status(404).json({
-            status: 'fail',
-            massege: err
-        });
+    // 2. Delete image from file system
+    if (cat.imageUrl) {
+        const imagePath = path.join(__dirname, '../uploads', cat.imageUrl.split('/').pop());
+        if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+        }
     }
-};
 
+    // 3. Delete the cat from the database
+    await Cat.findByIdAndDelete(req.params.id);
 
-
-exports.updateCat = async (req, res) => {
-    try {
-        const cat = await Cat.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true
-        });
-        res.status(200).json({
-            status: 'success',
-            data: {
-                cat
-            }
-        });
-    } catch (err) {
-        res.status(404).json({
-            status: 'fail',
-            massege: err
-        });
-    }
-};
-
-exports.deleteCat = async (req, res) => {
-    try {
-        await Cat.findByIdAndDelete(req.params.id);
-        res.status(204).json({
-            status: 'success',
-            data: null
-        });
-    } catch (err) {
-        res.status(404).json({
-            status: 'fail',
-            massege: err
-        });
-    }
-};
+    res.status(204).json({
+        status: 'success',
+        data: null
+    });
+});
