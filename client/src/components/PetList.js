@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllCats } from '../api';
+import { getAllCats } from '../api'; // Adjust the import path as needed
 import '../App.css';
 
 const CatList = () => {
@@ -49,10 +49,14 @@ const CatList = () => {
       <ul className="cat-list">
         {cats.map((cat) => (
           <li key={cat._id} className="cat-card">
-            <img src={`http://localhost:5000${cat.imageUrl}`} alt={cat.name} className="cat-image" />
+            <img src={cat.imageUrl[0]} alt={cat.name} className="cat-image" />
             <h3 className="cat-name">{cat.name}</h3>
             <p className="cat-breed">Breed: {cat.breed}</p>
             <p className="cat-age">Age: {cat.age} years</p>
+            <p className="cat-description">Description: {cat.description}</p>
+            <p className="cat-location">Location: {cat.location}</p>
+            <p className="cat-contact">Contact: {cat.email} / {cat.phone}</p>
+            <p className="cat-status">Status: {cat.adoptionStatus}</p>
           </li>
         ))}
       </ul>
