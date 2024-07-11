@@ -10,7 +10,8 @@ const PetForm = () => {
         description: '',
         image: null,
         contactEmail: '',
-        contactPhone: ''
+        contactPhone: '',
+        location: ''  // Added location field
     });
 
     const [formError, setFormError] = useState(null);
@@ -35,9 +36,16 @@ const PetForm = () => {
         e.preventDefault();
 
         const data = new FormData();
-        Object.keys(formData).forEach((key) => {
-            data.append(key, formData[key]);
-        });
+        data.append('name', formData.name);
+        data.append('age', formData.age);
+        data.append('breed', formData.breed);
+        data.append('description', formData.description);
+        data.append('contactEmail', formData.contactEmail);
+        data.append('contactPhone', formData.contactPhone);
+        data.append('location', formData.location);  // Append location to FormData
+        if (formData.image) {
+            data.append('imageUrl', formData.image);
+        }
 
         try {
             const response = await axios.post('http://localhost:5000/api/v1/cats', data, {
@@ -54,7 +62,8 @@ const PetForm = () => {
                 description: '',
                 image: null,
                 contactEmail: '',
-                contactPhone: ''
+                contactPhone: '',
+                location: ''  // Reset location field
             });
             setFormError(null);
         } catch (error) {
@@ -131,6 +140,16 @@ const PetForm = () => {
                         type="tel"
                         name="contactPhone"
                         value={formData.contactPhone}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">  {/* Added location input field */}
+                    <label>Location</label>
+                    <input
+                        type="text"
+                        name="location"
+                        value={formData.location}
                         onChange={handleChange}
                         required
                     />

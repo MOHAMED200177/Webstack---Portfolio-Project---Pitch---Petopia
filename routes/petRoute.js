@@ -1,12 +1,12 @@
 const express = require('express');
 const catController = require('./../controllers/petController');
-const multer = require('multer');
+const upload = require('./../utils/multer');
 const router = express.Router();
 
 router
     .route('/')
     .get(catController.getAllCats)
-    .post(catController.uploadCatImage, catController.createCat);
+    .post(upload.array('imageUrl', 3), catController.createCat); // Apply the upload middleware
 
 router
     .route('/:id')

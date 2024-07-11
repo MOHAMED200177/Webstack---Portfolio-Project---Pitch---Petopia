@@ -1,18 +1,12 @@
 const Cat = require('./../models/petModle');
 const APIFeatures = require('./../utils/apiFeatures');
-const upload = require('./../utils/multer');
 const catchAsync = require('./../utils/catchAsync');
-
-
-
-exports.uploadCatImage = upload.array('imageUrl', 3);
 
 exports.createCat = catchAsync(async (req, res) => {
     let imageUrls = [];
     if (req.files) {
         imageUrls = req.files.map(file => file.path); // Cloudinary stores URL in path
     }
-
 
     const newCatData = {
         name: req.body.name,
@@ -22,8 +16,8 @@ exports.createCat = catchAsync(async (req, res) => {
         adoptionStatus: req.body.adoptionStatus || 'Available',
         imageUrl: imageUrls,
         location: req.body.location,
-        email: req.body.email,
-        phone: req.body.phone,
+        // email: req.body.email,
+        // phone: req.body.phone,
         dateAdded: Date.now()
     };
 
@@ -36,9 +30,6 @@ exports.createCat = catchAsync(async (req, res) => {
         }
     });
 });
-
-
-
 
 exports.getAllCats = catchAsync(async (req, res) => {
     const features = new APIFeatures(Cat.find(), req.query)
@@ -58,13 +49,8 @@ exports.getAllCats = catchAsync(async (req, res) => {
     });
 });
 
-
-
-
 exports.getCat = catchAsync(async (req, res) => {
-
     const cat = await Cat.findById(req.params.id);
-
 
     if (!cat) {
         return res.status(404).json({
@@ -81,15 +67,11 @@ exports.getCat = catchAsync(async (req, res) => {
     });
 });
 
-
-
 exports.updateCat = catchAsync(async (req, res) => {
-
     const cat = await Cat.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true
     });
-
 
     if (!cat) {
         return res.status(404).json({
@@ -107,7 +89,6 @@ exports.updateCat = catchAsync(async (req, res) => {
 });
 
 exports.deleteCat = catchAsync(async (req, res) => {
-
     const cat = await Cat.findById(req.params.id);
 
     if (!cat) {

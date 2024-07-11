@@ -9,8 +9,9 @@ const customerRoute = require('./routes/CustomerRoute');
 const app = express();
 
 app.use(cors());
+
 // 1) MIDDLEWARES
-if (process.env.NODE === 'development') {
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
@@ -27,8 +28,8 @@ app.use((req, res, next) => {
   next();
 });
 
+// 2) ROUTES
 app.use('/api/v1/cats', catRoute);
 app.use('/api/v1/customers', customerRoute);
-
 
 module.exports = app;
