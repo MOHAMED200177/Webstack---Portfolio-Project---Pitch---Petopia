@@ -13,6 +13,7 @@ exports.createCat = catchAsync(async (req, res) => {
         imageUrls = req.files.map(file => file.path); // Cloudinary stores URL in path
     }
 
+
     const newCatData = {
         name: req.body.name,
         age: req.body.age,
@@ -35,6 +36,7 @@ exports.createCat = catchAsync(async (req, res) => {
         }
     });
 });
+
 
 
 
