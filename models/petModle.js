@@ -3,21 +3,21 @@ const mongoose = require('mongoose');
 const catSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: [true, 'please provide a name for Cat'],
         trim: true
     },
     age: {
         type: Number,
-        required: true
+        required: [true, 'please provide a age for Cat']
     },
     breed: {
         type: String,
-        required: true,
+        required: [true, 'please provide a bread for Cat'],
         trim: true
     },
     description: {
         type: String,
-        required: true,
+        required: [true, 'please provide a description for Cat'],
         trim: true
     },
     adoptionStatus: {
@@ -30,20 +30,33 @@ const catSchema = new mongoose.Schema({
         default: Date.now
     },
     imageUrl: {
+        type: [String],
+        validate: {
+            validator: function (val) {
+                return val.length <= 3;
+            },
+            message: 'A service can have up to 4 images'
+        }
+    },
+    location: {
         type: String,
-        trim: true
+        required: [true, 'Please provide a location']
     },
     email: {
         type: String,
-        required: true,
+        required: [true, 'please provide a email'],
         trim: true
     },
     phone: {
         type: String,
-        required: true,
-        trim: true
+        required: [true, 'Please provide a phone number'],
+        validate: {
+            validator: function (val) {
+                return /\d{10,15}/.test(val);
+            },
+            message: 'Please provide a valid phone number'
+        }
     }
-
 });
 
 const Cat = mongoose.model('Cat', catSchema);

@@ -1,19 +1,16 @@
 const Cat = require('./../models/petModle');
 const APIFeatures = require('./../utils/apiFeatures');
-const multer = require('multer');
-const path = require('path');
-const upload = require('./../utils/uploudImg');
+const upload = require('./../utils/multer');
 const catchAsync = require('./../utils/catchAsync');
-const fs = require('fs');
 
 
 
-exports.uploadCatImage = upload.single('image');
+exports.uploadCatImage = upload.array('imageUrl', 3);
 
 exports.createCat = catchAsync(async (req, res) => {
-    let imageUrl = '';
-    if (req.file) {
-        imageUrl = `/uploads/${req.file.filename}`;
+    let imageUrls = [];
+    if (req.files) {
+        imageUrls = req.files.map(file => file.path); // Cloudinary stores URL in path
     }
 
     const newCatData = {
@@ -22,9 +19,11 @@ exports.createCat = catchAsync(async (req, res) => {
         breed: req.body.breed,
         description: req.body.description,
         adoptionStatus: req.body.adoptionStatus || 'Available',
-        imageUrl: imageUrl,
+        imageUrl: imageUrls,
+        location: req.body.location,
         email: req.body.email,
-        phone: req.body.phone
+        phone: req.body.phone,
+        dateAdded: Date.now()
     };
 
     const newCat = await Cat.create(newCatData);
@@ -40,18 +39,13 @@ exports.createCat = catchAsync(async (req, res) => {
 
 
 exports.getAllCats = catchAsync(async (req, res) => {
+    const features = new APIFeatures(Cat.find(), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate();
 
-    let cats;
-    if (Object.keys(req.query).length === 0) {
-        cats = await Cat.find();
-    } else {
-        const features = new APIFeatures(Cat.find(), req.query)
-            .filter()
-            .sort()
-            .limitFields()
-            .paginate();
-        cats = await features.query;
-    }
+    const cats = await features.query;
 
     res.status(200).json({
         status: 'success',
@@ -69,6 +63,14 @@ exports.getCat = catchAsync(async (req, res) => {
 
     const cat = await Cat.findById(req.params.id);
 
+
+    if (!cat) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'Cat not found'
+        });
+    }
+
     res.status(200).json({
         status: 'success',
         data: {
@@ -85,6 +87,15 @@ exports.updateCat = catchAsync(async (req, res) => {
         new: true,
         runValidators: true
     });
+
+
+    if (!cat) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'Cat not found'
+        });
+    }
+
     res.status(200).json({
         status: 'success',
         data: {
@@ -95,7 +106,6 @@ exports.updateCat = catchAsync(async (req, res) => {
 
 exports.deleteCat = catchAsync(async (req, res) => {
 
-    // 1. Find the cat to delete
     const cat = await Cat.findById(req.params.id);
 
     if (!cat) {
@@ -105,15 +115,6 @@ exports.deleteCat = catchAsync(async (req, res) => {
         });
     }
 
-    // 2. Delete image from file system
-    if (cat.imageUrl) {
-        const imagePath = path.join(__dirname, '../uploads', cat.imageUrl.split('/').pop());
-        if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
-        }
-    }
-
-    // 3. Delete the cat from the database
     await Cat.findByIdAndDelete(req.params.id);
 
     res.status(204).json({

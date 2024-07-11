@@ -1,11 +1,12 @@
 const express = require('express');
 const morgan = require('morgan');
-const catRoute = require('./routes/petRoute');
 const path = require('path');
-const customerRoute = require('./routes/CustomerRoute');
-const app = express();
 const cors = require('cors');
 
+const catRoute = require('./routes/petRoute');
+const customerRoute = require('./routes/CustomerRoute');
+
+const app = express();
 
 app.use(cors());
 // 1) MIDDLEWARES
