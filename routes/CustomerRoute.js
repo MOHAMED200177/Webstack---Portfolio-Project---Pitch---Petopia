@@ -8,8 +8,8 @@ router.post('/login', customerController.login);
 
 router
     .route('/')
-    .get(customerController.getAllCustomers)
-    // .post(customerController.createCustomer);
+    .get(customerController.protect, customerController.getAllCustomers)
+// .post(customerController.createCustomer);
 
 router
     .route('/:id')
