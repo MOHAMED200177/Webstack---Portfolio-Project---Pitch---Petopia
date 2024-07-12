@@ -1,80 +1,135 @@
-/* src/components/CatList.css */
-
+/* Container styles */
 .cat-list-container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .title {
-    color: #2c3e50;
-    font-size: 28px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .filters {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .filter-item {
-    flex: 1;
-    margin-right: 10px;
-  }
-  
-  label {
-    font-weight: bold;
-  }
-  
-  input[type="text"],
-  select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .cat-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .cat-card {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .cat-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-right: 20px;
-  }
-  
-  .cat-details {
-    flex: 1;
-  }
-  
-  .cat-name {
-    margin: 0;
-    font-size: 18px;
-    color: #333;
-  }
-  
-  .cat-breed, .cat-age {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #666;
-  }
-  
+  max-width: 900px;
+  /* Increased width for better viewing experience */
+  margin: 40px auto;
+  /* Increased margin for better spacing */
+  padding: 25px;
+  /* Slightly increased padding for content breathing room */
+  background-color: #f8f8f8;
+  /* Subtle white background */
+  border-radius: 10px;
+  /* Consistent rounded corner style */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Lighter shadow for a clean look */
+}
+
+/* Title styles */
+.title {
+  color: #333;
+  /* Darker text for better contrast */
+  font-size: 36px;
+  /* Increased font size for prominence */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Filters section styles */
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-item {
+  flex: 1;
+  margin-right: 15px;
+  /* Increased spacing between filters */
+}
+
+/* Label styles */
+label {
+  font-weight: bold;
+  color: #666;
+  /* Grayish text for readability */
+}
+
+/* Input and select styles */
+input[type="text"],
+select {
+  width: 100%;
+  padding: 10px 15px;
+  /* Consistent padding for better aesthetics */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  /* Softer rounded corners */
+  font-size: 16px;
+}
+
+/* List styles */
+.cat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  /* Removed margin for improved layout */
+}
+
+/* Individual cat card styles */
+.cat-card {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  /* Consistent rounded corner style */
+  padding: 20px;
+  /* Increased padding for better content presentation */
+  margin-bottom: 20px;
+  transition: box-shadow 0.3s ease;
+  background-color: #fff;
+  /* White background */
+}
+
+.cat-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  /* Slightly stronger hover shadow */
+}
+
+/* Cat image styles */
+.cat-image {
+  width: 120px;
+  /* Increased width for larger cat pictures */
+  height: 120px;
+  border-radius: 50%;
+  margin-right: 25px;
+  /* Increased spacing between image and details */
+  object-fit: cover;
+  border: 2px solid #fff;
+  /* Thinner white border for aesthetics */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Lighter shadow for images */
+}
+
+/* Cat details styles */
+.cat-details {
+  flex: 1;
+}
+
+.cat-name {
+  margin: 0;
+  font-size: 22px;
+  /* Consistent font size for headings */
+  color: #333;
+}
+
+.cat-breed,
+.cat-age,
+.cat-description,
+.cat-location,
+.cat-status {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #666;
+  /* Consistent color for details */
+}
+
+.cat-description {
+  line-height: 1.5;
+  /* Improved line spacing for readability */
+}
+
+.cat-location,
+.cat-status {
+  font-weight: bold;
+  /* Added bold weight for emphasis */
+}

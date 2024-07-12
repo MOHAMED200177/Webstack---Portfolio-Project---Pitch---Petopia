@@ -4,7 +4,7 @@ const catchAsync = require('./../utils/catchAsync');
 
 exports.createCat = catchAsync(async (req, res) => {
     let imageUrls = [];
-    if (req.files) {
+    if (req.files && req.files.length > 0) { // تأكد من وجود ملفات قبل تحويلها إلى مصفوفة الطرق
         imageUrls = req.files.map(file => file.path); // Cloudinary stores URL in path
     }
 

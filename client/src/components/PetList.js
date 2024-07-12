@@ -54,8 +54,9 @@ const CatList = () => {
             <p className="cat-breed">Breed: {cat.breed}</p>
             <p className="cat-age">Age: {cat.age} years</p>
             <p className="cat-description">Description: {cat.description}</p>
+            <p className="cat-email">Location: {cat.email}</p>
+            <p className="cat-phone">Contact: {cat.phone}</p>
             <p className="cat-location">Location: {cat.location}</p>
-            <p className="cat-contact">Contact: {cat.email} / {cat.phone}</p>
             <p className="cat-status">Status: {cat.adoptionStatus}</p>
           </li>
         ))}
